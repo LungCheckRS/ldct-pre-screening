@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lung Cancer Screening Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      font-size: 16px;
+    }
+    #result {
+      margin-top: 25px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Lung Cancer Screening Eligibility Checker</h1>
+
+<p>Based on guidelines from the U.S. Preventive Services Task Force (USPSTF).</p>
+
+<label>Age:</label>
+<input type="number" id="age" placeholder="Enter age">
+
+<label>Do you currently smoke or have you smoked in the past?</label>
+<select id="smokeStatus">
+  <option value="never">Never smoked</option>
+  <option value="current">Current smoker</option>
+  <option value="former">Former smoker</option>
+</select>
+
+<label>Years smoked:</label>
+<input type="number" id="years">
+
+<label>Average cigarettes per day:</label>
+<input type="number" id="cigs" placeholder="e.g., 10, 20, 30">
+
+<label>If you quit, how many years ago?</label>
+<input type="number" id="quitYears" placeholder="0 if still smoking">
+
+<button onclick="checkEligibility()">Check Eligibility</button>
+
+<div id="result"></div>
+
+<script>
+function checkEligibility() {
+  let age = parseInt(document.getElementById("age").value);
+  let status = document.getElementById("smokeStatus").value;
+  let years = parseFloat(document.getElementById("years").value);
+  let cigs = parseFloat(document.getElementById("cigs").value);
+  let quitYears = parseFloat(document.getElementById("quitYears").value);
+
+  // Convert cigarettes to packs (20 cigarettes = 1 pack)
+  let packsPerDay = cigs / 20;
+
+  // Calculate pack-years
+  let packYears = years * packsPerDay;
+
+  let eligible = false;
+
+  if (
+    age >= 50 && age <= 80 &&
+    packYears >= 20 &&
+    (status === "current" || (status === "former" && quitYears <= 15))
+  ) {
+    eligible = true;
+  }
+
+  let resultDiv = document.getElementById("result");
+
+  if (eligible) {
+    resultDiv.innerHTML = `
+      ✅ You may be eligible for lung cancer screening (LDCT).<br><br>
+      Estimated pack-years: ${packYears.toFixed(1)}<br><br>
+      Early detection has been shown to reduce lung cancer mortality by ~20%. Please consult a healthcare provider.
+    `;
+  } else {
+    resultDiv.innerHTML = `
+      ❌ You may not meet current screening criteria.<br><br>
+      Estimated pack-years: ${packYears.toFixed(1)}<br><br>
+      If you have concerns, consult a healthcare provider.
+    `;
+  }
+}
+</script>
+
+</body>
+</html>
