@@ -1,2 +1,3 @@
 # ldct-pre-screening
-A digital pre-screening and behavioral intervention tool to improve lung cancer screening uptake using USPSTF LDCT criteria.
+This tool is designed to assess eligibility for lung cancer screening using guidelines from the U.S. Preventive Services Task Force.
+This is not a medical diagnosis. Please consult a healthcare provider for clinical decisions.
